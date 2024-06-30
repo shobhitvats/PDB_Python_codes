@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+if [[ ! -d "/home/shobhit/Desktop/PDB_Python_codes" ]]; then
+  echo "Cannot find source directory; Did you move it?"
+  echo "(Looking for "/home/shobhit/Desktop/PDB_Python_codes")"
+  echo 'Cannot force reload with this script - use "direnv reload" manually and then try again'
+  exit 1
+fi
+
+# rebuild the cache forcefully
+_nix_direnv_force_reload=1 direnv exec "/home/shobhit/Desktop/PDB_Python_codes" true
+
+# Update the mtime for .envrc.
+# This will cause direnv to reload again - but without re-building.
+touch "/home/shobhit/Desktop/PDB_Python_codes/.envrc"
+
+# Also update the timestamp of whatever profile_rc we have.
+# This makes sure that we know we are up to date.
+touch -r "/home/shobhit/Desktop/PDB_Python_codes/.envrc" "/home/shobhit/Desktop/PDB_Python_codes/.direnv"/*.rc
